@@ -333,3 +333,21 @@ def run_app():
         app.run(host=args.host, port=args.port, debug=args.debug)
     else:
         waitress.serve(app, listen="{}:{}".format(args.host, args.port))
+
+        def run_app():
+    parser = argparse.ArgumentParser(description='Whoogle Search console runner')
+    parser.add_argument('--port', default=5000, metavar='<port number>',
+                        help='Specifies a port to run on (default 5000)')
+    parser.add_argument('--host', default='127.0.0.1', metavar='<ip address>',
+                        help='Specifies the host address to use (default 127.0.0.1)')
+    parser.add_argument('--debug', default=False, action='store_true',
+                        help='Activates debug mode for the server (default False)')
+    parser.add_argument('--https-only', default=False, action='store_true',
+                        help='Enforces HTTPS redirects for all requests')
+    args = parser.parse_args()
+    os.environ['HTTPS_ONLY'] = '1' if args.https_only else ''
+
+    if args.debug:
+        app.run(host=args.host, port=args.port, debug=args.debug)
+    else:
+        waitress.serve(app, listen="{}:{}".format(args.host, args.port))
